@@ -1,6 +1,6 @@
 SRC := ${shell find . -type f -name \*.scala}
 
-all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_IMA.v
+all: VexRiscv.v VexRiscv_Debug.v VexRiscv_Lite.v VexRiscv_LiteDebug.v VexRiscv_Min.v VexRiscv_MinDebug.v VexRiscv_Full.v VexRiscv_FullDebug.v VexRiscv_Linux.v VexRiscv_LinuxDebug.v VexRiscv_IMA.v VexRiscv_MicroX.v VexRiscv_MicroX_Sim.v
 
 VexRiscv.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault"
@@ -40,3 +40,9 @@ VexRiscv_IMA_wide.v: $(SRC)
 
 VexRiscv_G.v: $(SRC)
 	sbt compile "runMain vexriscv.GenCoreDefault --atomics true --prediction dynamic_target --dCacheSize 8192 --iCacheSize 8192 --fpu true --withDouble true --pmpRegions 4 --pmpGranularity 4096 --csrPluginConfig secure --outputFile VexRiscv_G --privateNamespace true"
+
+VexRiscv_MicroX.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all2 -d -j --compressedGen true --outputFile VexRiscv_MicroX"
+
+VexRiscv_MicroX_Sim.v: $(SRC)
+	sbt compile "runMain vexriscv.GenCoreDefault --csrPluginConfig all2 --compressedGen true --outputFile VexRiscv_MicroX_Sim"
